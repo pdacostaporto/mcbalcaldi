@@ -1,0 +1,41 @@
+- name: Configure SSL for localhost
+  block:
+    - name: Install OpenSSL
+      apt:
+        name: openssl
+        state: latest
+      become: yes
+      become_user: root
+
+    - name: Install ssl-cert
+      apt:
+        name: ssl-cert
+        state: latest
+      become: yes
+      become_user: root
+
+    - name: Install minica
+      command: go get github.com/jsha/minica
+      environment:
+        GOPATH: /home/vagrant/go
+
+    - name: Generate certificate
+      command: /home/vagrant/go/bin/minica -ca-cert /vagrant/ca.crt -ca-key /vagrant/ca.key -domains localhost
+      args:
+        chdir: /home/vagrant
+
+    - name: Install certificate
+      command: mv localhost/cert.pem /etc/ssl/certs/localhost.crt
+      args:
+        chdir: /home/vagrant
+      become: yes
+      become_user: root
+
+
+    - name: Install private key
+      command: mv localhost/key.pem /etc/ssl/private/localhost.key
+      args:
+        chdir: /home/vagrant
+      become: yes
+      become_user: root
+  when: runtime_environment != "production"

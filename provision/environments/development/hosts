@@ -1,0 +1,11 @@
+all:
+  hosts:
+    default:
+      ansible_connection: local
+  children:
+    dbservers:
+      hosts:
+        default:
+    webservers:
+      hosts:
+        default:

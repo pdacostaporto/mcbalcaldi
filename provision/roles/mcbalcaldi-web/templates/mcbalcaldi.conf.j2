@@ -1,0 +1,20 @@
+{% if http_port is defined and http_port %}
+Listen {{ http_port }}
+{% endif %}
+{% if https_port is defined and https_port %}
+Listen {{ https_port }} https
+{% endif %}
+<VirtualHost *:{{ http_port | default(80, true) }}>
+  ServerName {{ hostname }}
+  Redirect "/" "https://{{ secure_hostname }}/"
+</VirtualHost>
+<VirtualHost *:{{ https_port | default(443, true) }}>
+  ServerName {{ secure_hostname }}
+  DocumentRoot /var/www/mcbalcaldi/web
+  SSLEngine on
+  SSLCertificateFile "{{ cert_file }}"
+  SSLCertificateKeyFile "{{ cert_key_file }}"
+</VirtualHost>
+<Directory "/var/www/mcbalcaldi/web">
+  AllowOverride All
+</Directory>

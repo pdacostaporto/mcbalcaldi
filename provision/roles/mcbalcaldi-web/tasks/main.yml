@@ -1,0 +1,13 @@
+- name: Deploy web UI
+  block:
+  - name: Load site configuration
+    template:
+      src: mcbalcaldi.conf.j2
+      dest: /etc/apache2/sites-available/mcbalcaldi.conf
+    notify: Restart web server
+
+  - name: Enable site
+    command: a2ensite mcbalcaldi
+    notify: Restart web server
+  become: yes
+  become_user: root

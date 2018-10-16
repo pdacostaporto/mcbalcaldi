@@ -1,0 +1,7 @@
+---
+http_port: 10666
+https_port: 10667
+hostname: "localhost:{{ http_port }}"
+secure_hostname: "localhost:{{ https_port }}"
+cert_file: /etc/ssl/certs/localhost.crt
+cert_key_file: /etc/ssl/private/localhost.key

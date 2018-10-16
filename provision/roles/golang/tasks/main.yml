@@ -1,0 +1,6 @@
+- name: Install Go
+  apt:
+    name: golang
+    state: latest
+  become: yes
+  become_user: root

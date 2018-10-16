@@ -1,0 +1,4 @@
+hostname: mcbalcaldi.kerri.uy
+secure_hostname: mcbalcaldi.kerri.uy
+cert_file: /etc/letsencrypt/live/mcbalcaldi.kerri.uy/cert.pem
+cert_key_file: /etc/letsencrypt/live/mcbalcaldi.kerri.uy/privkey.pem

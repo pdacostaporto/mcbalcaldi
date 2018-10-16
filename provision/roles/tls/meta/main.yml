@@ -1,0 +1,17 @@
+---
+dependencies:
+  - role: golang
+    when: runtime_environment == "development"
+  - role: geerlingguy.certbot
+    vars:
+      certbot_create_if_missing: yes
+      certbot_admin_email: pdacostaporto@gmail.com
+      certbot_certs:
+        - domains:
+          - "{{ hostname }}"
+      certbot_create_standalone_stop_services:
+        - apache2
+      certbot_install_from_source: yes
+    when: runtime_environment != "development"
+    become: yes
+    become_user: root

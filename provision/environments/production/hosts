@@ -1,0 +1,12 @@
+all:
+  hosts:
+    default:
+      ansible_host: mcbalcaldi.kerri.uy
+      ansible_user: ubuntu
+  children:
+    dbservers:
+      hosts:
+        default
+    webservers:
+      hosts:
+        default:

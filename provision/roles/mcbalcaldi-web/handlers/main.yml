@@ -1,0 +1,8 @@
+- name: Restart web server
+  systemd:
+    name: apache2
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  become: true
+  become_user: root

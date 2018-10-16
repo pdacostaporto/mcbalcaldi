@@ -1,0 +1,15 @@
+---
+dependencies:
+  - role: geerlingguy.mysql
+    vars:
+      mysql_root_home: /root
+      mysql_root_username: root
+      mysql_root_password: "{{ db_root_password }}"
+      mysql_databases:
+        - name: mcbalcaldi
+      mysql_users:
+        - name: mcbalcaldi
+          password: "{{ db_mcbalcaldi_password }}"
+          encrypted: no
+          priv: "mcbalcaldi.*:ALL"
+    become: yes

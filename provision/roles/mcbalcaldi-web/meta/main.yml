@@ -1,0 +1,32 @@
+---
+dependencies:
+  - role: tls
+    become: yes
+  - role: geerlingguy.git
+    become: yes
+  - role: geerlingguy.apache
+    vars:
+      apache_mods_enabled:
+        - alias.load
+        - proxy.load
+        - proxy_http.load
+        - ssl.load
+        - rewrite.load
+    become: yes
+  - role: geerlingguy.php
+    become: yes
+    vars:
+      php_packages:
+        - libapache2-mod-fcgid
+        - libapache2-mod-php7.0
+        - php-apcu
+        - php7.0-xml
+        - php7.0-gd
+        - php7.0-mysql
+        - php7.0-json
+        - php7.0-curl
+        - php7.0-mbstring
+        - php7.0-zip
+        - unzip
+  - role: geerlingguy.composer
+    become: yes
