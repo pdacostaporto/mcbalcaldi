@@ -2,7 +2,7 @@ all:
   hosts:
     default:
       ansible_host: mcbalcaldi.kerri.uy
-      ansible_user: ubuntu
+      ansible_user: mcbalcaldi
   children:
     dbservers:
       hosts:

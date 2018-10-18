@@ -1,17 +1,9 @@
 ---
 - hosts: dbservers
-  tasks:
-    - name: Configure production database
-      include_role:
-        name: mcbalcaldi-db
-        vars_from: production
-      when: runtime_environment == "production"
-
-    - name: Configure development database
-      include_role:
-        name: mcbalcaldi-db
-      when: runtime_environment == "development"
+  roles:
+    - mcbalcaldi-db
 
 - hosts: webservers
   roles:
+    - { role: checkout, when: runtime_environment != "development" }
     - mcbalcaldi-web

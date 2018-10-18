@@ -1,4 +1,31 @@
-- name: Deploy web UI
+- name: Install dependencies
+  composer:
+    command: install
+    working_dir: /var/www/mcbalcaldi
+
+- name: Check if site is already installed
+  command: cat /var/www/mcbalcaldi/web/sites/default/settings.php
+  register: settings_php
+
+- name: Install site
+  command: "vendor/drupal/console/bin/drupal site:install --no-interaction --db-name=mcbalcaldi --db-user=mcbalcaldi --db-pass={{ db_mcbalcaldi_password }} --langcode=es"
+  args:
+    chdir: /var/www/mcbalcaldi
+  when: settings_php.stdout.find('mcbalcaldi') == -1
+
+- name: Config language UUID (for a bug workaround)
+  command: vendor/drush/drush/drush config-set language.entity.es uuid aa04fdd1-a308-4a08-b17f-5cdffed4e640 -y
+  args:
+    chdir: /var/www/mcbalcaldi
+  when: false
+
+- name: Import configuration
+  command: "vendor/drupal/console/bin/drupal config:import"
+  args:
+    chdir: /var/www/mcbalcaldi
+  when: false
+
+- name: Configure web server
   block:
   - name: Load site configuration
     template:

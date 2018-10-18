@@ -33,4 +33,4 @@
 *.log
 
 # Credentials
-provision/roles/mcbalcaldi-db/vars/production.yml
+provision/environments/production/group_vars/all/credentials

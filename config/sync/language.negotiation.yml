@@ -3,7 +3,8 @@ session:
 url:
   source: path_prefix
   prefixes:
-    es: ''
+    es: es
+    '': null
   domains:
     es: ''
 selected_langcode: site_default
