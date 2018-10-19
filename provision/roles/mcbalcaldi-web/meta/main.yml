@@ -1,7 +1,5 @@
 ---
 dependencies:
-  - role: tls
-    become: yes
   - role: geerlingguy.git
     become: yes
   - role: geerlingguy.apache
@@ -30,3 +28,7 @@ dependencies:
         - unzip
   - role: geerlingguy.composer
     become: yes
+  - role: tls
+    become: yes
+  - role: checkout
+    when: runtime_environment == "production"

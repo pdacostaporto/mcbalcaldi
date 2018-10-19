@@ -1,7 +1,17 @@
+- name: Create the directory for the project
+  file:
+    path: /var/www/mcbalcaldi
+    owner: mcbalcaldi
+    group: www-data
+    recurse: yes
+    state: directory
+  become: true
+  become_user: root
+
 - name: Checkout the project from Git
   git:
-    repo: 'ssh://git@github.com:pdacostaporto/mcbalcaldi.git'
-    dest: "/var/www/mcbalcaldi"
+    repo: 'ssh://git@github.com/pdacostaporto/mcbalcaldi.git'
+    dest: /var/www/mcbalcaldi
     version: master
     accept_hostkey: yes
     ssh_opts: "-o StrictHostKeyChecking=no"

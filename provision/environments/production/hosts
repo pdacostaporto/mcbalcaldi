@@ -1,7 +1,7 @@
 all:
   hosts:
     default:
-      ansible_host: mcbalcaldi.kerri.uy
+      ansible_host: 142.93.204.211
       ansible_user: mcbalcaldi
   children:
     dbservers:

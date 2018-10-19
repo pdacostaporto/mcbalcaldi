@@ -79,9 +79,9 @@ Vagrant.configure("2") do |config|
     ]
   end
 
-  config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
-  config.vm.synced_folder ".", "/var/www/mcbalcaldi", type: "virtualbox",
-      mount_options: ["uid=1000", "gid=33"]
+  config.vm.synced_folder ".", "/vagrant", type: "nfs"
+  config.bindfs.bind_folder "/vagrant", "/var/www/mcbalcaldi",
+      force_user: 'vagrant', force_group: 'www-data', after: :provision
 
   # Para redirigir credenciales de SSH.
   config.ssh.forward_agent = true

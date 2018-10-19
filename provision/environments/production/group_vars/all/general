@@ -1,2 +1,3 @@
 ---
+project_root: /var/www/mcbalcaldi
 runtime_environment: production
