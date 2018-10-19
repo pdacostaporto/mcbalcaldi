@@ -1,0 +1,14 @@
+uuid: f602b188-d7d6-4d47-a77a-c9769e443401
+langcode: es
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: vymHlgJy26BuI5GGj9-IXjwR3dRC5C0tij4BpWJnoqw
+id: feedback
+label: 'Website feedback'
+recipients:
+  - admin@kerri.uy
+reply: ''
+weight: 0
+message: 'Se ha enviado su mensaje.'
+redirect: ''

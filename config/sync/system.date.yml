@@ -1,8 +1,8 @@
 country:
-  default: ''
+  default: UY
 first_day: 0
 timezone:
-  default: America/Chicago
+  default: America/Montevideo
   user:
     configurable: true
     warn: false
