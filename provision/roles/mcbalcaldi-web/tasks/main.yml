@@ -8,7 +8,7 @@
   register: settings_php
 
 - name: Install site
-  command: "vendor/drupal/console/bin/drupal site:install --no-interaction --db-name=mcbalcaldi --db-user=mcbalcaldi --db-pass=\"{{ db_mcbalcaldi_password }}\" --langcode=es"
+  command: "vendor/drupal/console/bin/drupal site:install --force --no-interaction --db-name=mcbalcaldi --db-user=mcbalcaldi --db-pass=\"{{ db_mcbalcaldi_password }}\" --langcode=es"
   args:
     chdir: "{{ project_root }}"
   when: settings_php.stdout.find('mcbalcaldi') == -1

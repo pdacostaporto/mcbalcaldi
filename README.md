@@ -1,143 +1,56 @@
-# Composer template for Drupal projects
+María del Carmen Balcaldi ― Fotografía
+======================================
 
-[![Build Status](https://travis-ci.org/drupal-composer/drupal-project.svg?branch=8.x)](https://travis-ci.org/drupal-composer/drupal-project)
+Fotografías de María del Carmen Balcaldi.
 
-This project template provides a starter kit for managing your site
-dependencies with [Composer](https://getcomposer.org/).
+## Cómo contribuir
 
-If you want to know how to use it as replacement for
-[Drush Make](https://github.com/drush-ops/drush/blob/8.x/docs/make.md) visit
-the [Documentation on drupal.org](https://www.drupal.org/node/2471553).
+### Requerimientos
 
-## Usage
-
-First you need to [install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
-
-> Note: The instructions below refer to the [global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
-You might need to replace `composer` with `php composer.phar` (or similar) 
-for your setup.
-
-After that you can create the project:
-
+El ambiente de desarrollo corre sobre una máquina virtual y requiere que la virtualización por hardware esté habilitada, lo cual se hace a través del BIOS o la UEFI. En caso de duda, verificar que el hardware soporta virtualización; en Ubuntu, se puede verificar a través de la herramienta `kvm-ok`.
 ```
-composer create-project drupal-composer/drupal-project:8.x-dev some-dir --stability dev --no-interaction
+$ sudo apt install cpu-checker
+...
+$ sudo kvm-ok
+INFO: /dev/kvm exists
+KVM acceleration can be used
 ```
 
-With `composer require ...` you can download new dependencies to your 
-installation.
+La máquina virtual se configura a través [Vagrant](https://www.vagrantup.com/), el cual se instala a través de los paquetes distribuidos en su web.
 
+En particular, se usa [VirtualBox](https://www.virtualbox.org/) como proveedor de Vagrant; en Ubuntu se puede instalar a través de los paquetes oficiales.
 ```
-cd some-dir
-composer require drupal/devel:~1.0
+$ sudo apt install virtualbox
+```
+Para evitar problemas con las *guest additions* de VirtualBox, se recomienda instalar el siguiente plugin de Vagrant:
+```
+$ vagrant plugin install vagrant-vbguest
 ```
 
-The `composer create-project` command passes ownership of all files to the 
-project that is created. You should create a new git repository, and commit 
-all files not excluded by the .gitignore file.
-
-## What does the template do?
-
-When installing the given `composer.json` some tasks are taken care of:
-
-* Drupal will be installed in the `web`-directory.
-* Autoloader is implemented to use the generated composer autoloader in `vendor/autoload.php`,
-  instead of the one provided by Drupal (`web/vendor/autoload.php`).
-* Modules (packages of type `drupal-module`) will be placed in `web/modules/contrib/`
-* Theme (packages of type `drupal-theme`) will be placed in `web/themes/contrib/`
-* Profiles (packages of type `drupal-profile`) will be placed in `web/profiles/contrib/`
-* Creates default writable versions of `settings.php` and `services.yml`.
-* Creates `web/sites/default/files`-directory.
-* Latest version of drush is installed locally for use at `vendor/bin/drush`.
-* Latest version of DrupalConsole is installed locally for use at `vendor/bin/drupal`.
-* Creates environment variables based on your .env file. See [.env.example](.env.example).
-
-## Updating Drupal Core
-
-This project will attempt to keep all of your Drupal Core files up-to-date; the 
-project [drupal-composer/drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold) 
-is used to ensure that your scaffold files are updated every time drupal/core is 
-updated. If you customize any of the "scaffolding" files (commonly .htaccess), 
-you may need to merge conflicts if any of your modified files are updated in a 
-new release of Drupal core.
-
-Follow the steps below to update your core files.
-
-1. Run `composer update drupal/core webflo/drupal-core-require-dev symfony/* --with-dependencies` to update Drupal Core and its dependencies.
-1. Run `git diff` to determine if any of the scaffolding files have changed. 
-   Review the files for any changes and restore any customizations to 
-  `.htaccess` or `robots.txt`.
-1. Commit everything all together in a single commit, so `web` will remain in
-   sync with the `core` when checking out branches or running `git bisect`.
-1. In the event that there are non-trivial conflicts in step 2, you may wish 
-   to perform these steps on a branch, and use `git merge` to combine the 
-   updated core files with your customized files. This facilitates the use 
-   of a [three-way merge tool such as kdiff3](http://www.gitshah.com/2010/12/how-to-setup-kdiff-as-diff-tool-for-git.html). This setup is not necessary if your changes are simple; 
-   keeping all of your modifications at the beginning or end of the file is a 
-   good strategy to keep merges easy.
-
-## Generate composer.json from existing project
-
-With using [the "Composer Generate" drush extension](https://www.drupal.org/project/composer_generate)
-you can now generate a basic `composer.json` file from an existing project. Note
-that the generated `composer.json` might differ from this project's file.
-
-
-## FAQ
-
-### Should I commit the contrib modules I download?
-
-Composer recommends **no**. They provide [argumentation against but also 
-workrounds if a project decides to do it anyway](https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).
-
-### Should I commit the scaffolding files?
-
-The [drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold) plugin can download the scaffold files (like
-index.php, update.php, …) to the web/ directory of your project. If you have not customized those files you could choose
-to not check them into your version control system (e.g. git). If that is the case for your project it might be
-convenient to automatically run the drupal-scaffold plugin after every install or update of your project. You can
-achieve that by registering `@composer drupal:scaffold` as post-install and post-update command in your composer.json:
-
-```json
-"scripts": {
-    "post-install-cmd": [
-        "@composer drupal:scaffold",
-        "..."
-    ],
-    "post-update-cmd": [
-        "@composer drupal:scaffold",
-        "..."
-    ]
-},
+Se usa NFS para compartir directorios con la máquina virtual. Para instalarlo en Ubuntu:
 ```
-### How can I apply patches to downloaded modules?
-
-If you need to apply patches (depending on the project being modified, a pull 
-request is often a better solution), you can do so with the 
-[composer-patches](https://github.com/cweagans/composer-patches) plugin.
-
-To add a patch to drupal module foobar insert the patches section in the extra 
-section of composer.json:
-```json
-"extra": {
-    "patches": {
-        "drupal/foobar": {
-            "Patch description": "URL or local path to patch"
-        }
-    }
-}
+$ sudo apt install nfs-common nfs-kernel-server
 ```
-### How do I switch from packagist.drupal-composer.org to packages.drupal.org?
 
-Follow the instructions in the [documentation on drupal.org](https://www.drupal.org/docs/develop/using-composer/using-packagesdrupalorg).
-
-### How do I specify a PHP version ?
-
-Currently Drupal 8 supports PHP 5.5.9 as minimum version (see [Drupal 8 PHP requirements](https://www.drupal.org/docs/8/system-requirements/drupal-8-php-requirements)), however it's possible that a `composer update` will upgrade some package that will then require PHP 7+.
-
-To prevent this you can add this code to specify the PHP version you want to use in the `config` section of `composer.json`:
-```json
-"config": {
-    "sort-packages": true,
-    "platform": {"php": "5.5.9"}
-},
+También se usa bindfs para poder configurar los permisos sobre los directorios compartidos, por lo que hay que instalar el plugin de Vagrant correspondiente:
 ```
+$ vagrant plugin install vagrant-bindfs
+```
+
+Para desplegar en producción hay que tener instalado [Ansible](https://www.ansible.com/). Para instalar la última versión en Ubuntu:
+```
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt update
+$ sudo apt install ansible
+```
+
+### Configuración
+
+Para aceptar automáticamente los certificados de TLS de la aplicación en el entorno de desarrollo es necesario agregar el certificado `ca.crt` contenido en la raíz del repositorio como autoridad de confianza del navegador o del cliente que se esté usando.
+
+Para iniciar la máquina virtual se corre el comando `vagrant up` dentro del repositorio. Al final del proceso se puede acceder al sitio en la URL http://localhost:10666.  En caso de error se puede reintentar el proceso mediante el comando `vagrant provision` o `vagrant up --provision`. (Tener en cuenta que para que el sitio se instale es necesario borrar el archivo `web/sites/default/settings.php` si es que existe.) Para apagar la máquina virtual se corre el comando `vagrant halt` y para borrarla `vagrant destroy`. Se puede acceder a la máquina virtual mediante el comando `vagrant ssh`. Dentro de ella el repositorio se encuentra en la ruta `/var/www/mcbalcaldi`.
+
+### Despliegue
+
+Para desplegar el contenido de `master` en el servidor primero es necesario crear el archivo `provision/environments/production/group_vars/all/credentials` y configurar en él las credenciales con el mismo formato que el archivo `provision/environments/production/group_vars/all/credentials`.
+Luego, correr el script `deploy.sh` para desplegar.
