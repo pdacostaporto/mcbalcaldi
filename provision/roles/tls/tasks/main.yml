@@ -20,7 +20,7 @@
         GOPATH: /home/vagrant/go
 
     - name: Generate certificate
-      command: /home/vagrant/go/bin/minica -ca-cert /vagrant/ca.crt -ca-key /vagrant/ca.key -domains localhost
+      command: "/home/vagrant/go/bin/minica -ca-cert {{ ca_cert }} -ca-key {{ ca_cert_key }} -domains localhost"
       args:
         chdir: /home/vagrant
 

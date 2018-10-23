@@ -1,7 +1,14 @@
 - name: Install dependencies
   composer:
     command: install
+    no_dev: "{{ runtime_environment != \"development\" }}"
     working_dir: "{{ project_root }}"
+
+- name: Set public permissions on files directory
+  file:
+    path: "{{ project_root }}/web/sites/default/files"
+    state: directory
+    mode: 0777
 
 - name: Check if site is already installed
   command: "cat {{ project_root}}/web/sites/default/settings.php"

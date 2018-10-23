@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "debian/stretch64"
+  config.vm.box = "ubuntu/bionic64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -68,9 +68,10 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible_local" do |ansible|
     ansible.install_mode = "pip"
     ansible.version = "2.7.0"
-    ansible.playbook = "provision/install.yml"
-    ansible.inventory_path = "provision/environments/development/hosts"
-    ansible.galaxy_role_file = "provision/requirements.yml"
+    ansible.provisioning_path = "/var/www/mcbalcaldi"
+    ansible.playbook = "/var/www/mcbalcaldi/provision/install.yml"
+    ansible.inventory_path = "/var/www/mcbalcaldi/provision/environments/development/hosts"
+    ansible.galaxy_role_file = "/var/www/mcbalcaldi/provision/requirements.yml"
     ansible.galaxy_roles_path = "/etc/ansible/roles"
     ansible.galaxy_command = "sudo ansible-galaxy install --role-file=%{role_file} --roles-path=%{roles_path} --force"
     ansible.raw_arguments = [
@@ -79,9 +80,22 @@ Vagrant.configure("2") do |config|
     ]
   end
 
-  config.vm.synced_folder ".", "/vagrant", type: "nfs"
-  config.bindfs.bind_folder "/vagrant", "/var/www/mcbalcaldi",
-      force_user: 'vagrant', force_group: 'www-data', after: :provision
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.synced_folder ".", "/var/www/mcbalcaldi", type: "rsync",
+    mount_options: ["uid=1000", "gid=33"], rsync__exclude: [
+      ".git/",
+      "drush/contrib/",
+      "vendor/",
+      "web/core/",
+      "web/modules/contrib/",
+      "web/themes/contrib/",
+      "web/profiles/contrib/",
+      "web/libraries/",
+      "web/sites/default/files/",
+      "web/sites/simpletest/"
+    ]
+  config.vm.synced_folder "config", "/var/www/mcbalcaldi/config",
+    type: "virtualbox", mount_options: ["uid=1000", "gid=33"]
 
   # Para redirigir credenciales de SSH.
   config.ssh.forward_agent = true
